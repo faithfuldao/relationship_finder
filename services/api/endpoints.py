@@ -32,3 +32,11 @@ def know_persons(driver : Driver):
         time=summary.result_available_after
 ))
 
+def update_object(driver: Driver, name: str, age: int):
+    records, summary, keys = driver.execute_query("""
+    MATCH (p:Person {name: $name})
+    SET p.age = $age
+    """, name=name, age=age,
+    database_="relationship.finder",
+    )
+    print(f"Query counters: {summary.counters}.")
