@@ -56,4 +56,27 @@ class Neo4J_Queries:
             users_name.append(record.data())
         
         return users_name
+    
+    #same query the professional way
+    @staticmethod
+    def get_user_infos(driver:Driver):
+        records, _, _ = driver.execute_query(
+        "MATCH (p:Person) RETURN p{ .name, .age, .city } AS user_profile",
+        database_="relationship.finder",
+        )
+        return [record["user_profile"] for record in records]
+    
+    #gets all the fields of the Object without having to type each one
+    @staticmethod
+    def get_all_user_infos(driver: Driver):
+        records, _, _ = driver.execute_query(
+            "MATCH (p:Person) RETURN p",
+            routing_= 'r',
+            database_="relationship.finder",
+        )
+        if records:
+            # record["p"] is a Node object. 
+            # .items() converts all properties into a dictionary automatically.
+            return dict(records[0]["p"].items())
+        return None
 

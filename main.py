@@ -11,7 +11,7 @@ def main():
             #Neo4J_Queries.create_graph_relations(neo4j_driver, "victor", "tony")
             #Neo4J_Queries.know_persons(neo4j_driver)
             #Neo4J_Queries.update_object(neo4j_driver, "Victor", 34)
-            users_age =Neo4J_Queries.get_user_age(neo4j_driver)
+            users_age =Neo4J_Queries.get_user_infos(neo4j_driver)
             print(users_age)
 
         finally:
