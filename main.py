@@ -12,7 +12,9 @@ def main():
             #Neo4J_Queries.know_persons(neo4j_driver)
             #Neo4J_Queries.update_object(neo4j_driver, "Victor", 34)
             users_age =Neo4J_Queries.get_user_infos(neo4j_driver)
+            embeddings = Neo4J_Queries.update_embeddings(neo4j_driver)
             print(users_age)
+            print(embeddings)
 
         finally:
                 neo4j_driver.close()

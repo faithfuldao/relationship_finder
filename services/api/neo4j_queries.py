@@ -1,4 +1,6 @@
 from neo4j import GraphDatabase, Driver
+from openai import OpenAI
+from services.api.embeddings import create_graph_embeddings
 
 class Neo4J_Queries:
     @staticmethod
@@ -77,6 +79,30 @@ class Neo4J_Queries:
         if records:
             # record["p"] is a Node object. 
             # .items() converts all properties into a dictionary automatically.
+            return dict(records[0]["p"].items())
+        return None
+    
+    @staticmethod
+    def update_embeddings(driver: Driver):
+        records, _, _ = driver.execute_query(
+            "MATCH (p:Person) WHERE p.embedding IS NULL RETURN p.name AS name",
+            database_="relationship.finder"
+        )
+        
+        print(f"Found {len(records)} persons to embed...")
+
+        for record in records:
+            name = record["name"]
+            print(f"Embedding {name}...")
+            
+            vector = create_graph_embeddings(name)
+            
+            driver.execute_query(
+                "MATCH (p:Person {name: $name}) SET p.embedding = $vector",
+                name=name, vector=vector,
+                database_="relationship.finder"
+            )
+        if records:
             return dict(records[0]["p"].items())
         return None
 

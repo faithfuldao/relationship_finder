@@ -1,2 +1,5 @@
 neo4j
 python-dotenv
+langgraph
+langchain
+openai
