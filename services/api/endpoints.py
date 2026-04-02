@@ -8,7 +8,7 @@ def create_graph_relations(driver: Driver, name: str, friendName: str):
                 CREATE (a)-[:KNOWS]->(b)
                 """,
                 name=name, friendName=friendName,
-                database_="relationship.finder",
+                database_="sandbox.training",
             ).summary
      print("Created {nodes_created} nodes in {time} ms.".format(
                 nodes_created=summary.counters.nodes_created,
@@ -19,10 +19,10 @@ def create_graph_relations(driver: Driver, name: str, friendName: str):
 
 def know_persons(driver : Driver):
     records, summary, keys = driver.execute_query("""
-    MATCH (p:Person)-[:KNOWS]->(:Person)
-    RETURN p.name AS name
+    MATCH (tom:Person {name:"Tom Hanks"})
+    RETURN tom
     """,
-    database_="relationship.finder",)
+    database_="sandbox.training",)
     
     for record in records:
         print(record.data()) 
@@ -37,6 +37,6 @@ def update_object(driver: Driver, name: str, age: int):
     MATCH (p:Person {name: $name})
     SET p.age = $age
     """, name=name, age=age,
-    database_="relationship.finder",
+    database_="sandbox.training",
     )
     print(f"Query counters: {summary.counters}.")

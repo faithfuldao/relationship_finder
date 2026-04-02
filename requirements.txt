@@ -3,3 +3,6 @@ python-dotenv
 langgraph
 langchain
 openai
+fastapi
+uvicorn[standard]
+pydantic
